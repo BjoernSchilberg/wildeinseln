@@ -10,7 +10,6 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Popup from "./Popup";
-import thueringen from "./thueringen";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 
@@ -31,6 +30,8 @@ export default {
     url: "data/wildeinseln.geojson",
     einsatzstellen: {},
     einsatzstelle: {},
+    thueringen: {},
+    coords: [],
     dialog: false,
     map: {},
     //https://github.com/esri/esri-leaflet#terms
@@ -73,8 +74,61 @@ export default {
     //#e87a05
     //#31a354
   }),
+  watch: {
+    coords: function(val) {
+    L.Mask = L.Polygon.extend({
+      options: {
+        stroke: false,
+        color: "#333",
+        fillOpacity: 0.5,
+        clickable: true,
+        outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
+      },
+
+      initialize: function(latLngs, options) {
+        var outerBoundsLatLngs = [
+          this.options.outerBounds.getSouthWest(),
+          this.options.outerBounds.getNorthWest(),
+          this.options.outerBounds.getNorthEast(),
+          this.options.outerBounds.getSouthEast()
+        ];
+        L.Polygon.prototype.initialize.call(
+          this,
+          [outerBoundsLatLngs, latLngs],
+          options
+        );
+      }
+    });
+
+    L.mask = function(latLngs, options) {
+      return new L.Mask(latLngs, options);
+    };
+    console.log(val)
+
+    L.mask(val).addTo(this.map);
+
+    }
+  },
   created() {
     this.fetchData(this.url);
+    fetch("data/thueringen.geojson")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        let cs= []
+        this.thueringen=L.geoJSON(data, {
+            coordsToLatLng: function(coords) {
+            //                    latitude , longitude, altitude
+            //return new L.LatLng(coords[1], coords[0], coords[2]); //Normal behavior
+            cs.push([coords[1],coords[0]])
+            return new L.LatLng(coords[1], coords[0], coords[2]);
+
+          }
+        });
+        this.map.fitBounds(this.thueringen.getBounds())
+        this.coords=cs
+      });
   },
   mounted() {
     this.map = L.map("map", {
@@ -103,35 +157,6 @@ export default {
     //  console.log(this.map.getCenter());
     //});
 
-    L.Mask = L.Polygon.extend({
-      options: {
-        stroke: false,
-        color: "#333",
-        fillOpacity: 0.5,
-        clickable: true,
-        outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
-      },
-
-      initialize: function(latLngs, options) {
-        var outerBoundsLatLngs = [
-          this.options.outerBounds.getSouthWest(),
-          this.options.outerBounds.getNorthWest(),
-          this.options.outerBounds.getNorthEast(),
-          this.options.outerBounds.getSouthEast()
-        ];
-        L.Polygon.prototype.initialize.call(
-          this,
-          [outerBoundsLatLngs, latLngs],
-          options
-        );
-      }
-    });
-
-    L.mask = function(latLngs, options) {
-      return new L.Mask(latLngs, options);
-    };
-
-    L.mask(thueringen).addTo(this.map);
   },
   methods: {
     fetchData(url) {
