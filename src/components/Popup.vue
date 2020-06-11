@@ -20,70 +20,36 @@
                 <strong>{{ einsatzstelle.titel }}</strong>
               </div>
               <div
-                v-if="einsatzstelle.beginn || einsatzstelle.ende"
+                v-if="einsatzstelle.datum"
                 class="body-1">
-                {{ einsatzstelle.beginn }}
-                <div
-                  v-if="einsatzstelle.ende"
-                  style="display:inline-block">
-                  bis {{ einsatzstelle.ende }}
-                </div>
+                Erfasst am: <strong>{{ einsatzstelle.datum }}</strong>
               </div>
             </v-col>
           </v-row>
           <v-layout row>
             <v-flex md6>
-              <v-card-text v-if="einsatzstelle.themen">
-                <strong>Themen</strong>
-                <br>
-                {{ einsatzstelle.themen }}
-              </v-card-text>
-
-              <v-card-text
-                v-if="einsatzstelle.taschengeld || einsatzstelle.anzahl || einsatzstelle.bewerbungsschluss">
-                <strong>Eckdaten</strong>
+              <v-card-text>
+                <strong> Eckdaten </strong>
                 <ul>
-                  <li v-if="einsatzstelle.anzahl">
-                    Anzahl Plätze:
-                    <strong>{{ einsatzstelle.anzahl }}</strong>
-                  </li>
-                  <li v-if="einsatzstelle.anforderungen">
-                    Anforderungen:
-                    <strong>{{ einsatzstelle.anforderungen }}</strong>
-                  </li>
-                  <li v-if="einsatzstelle.taschengeld">
-                    Taschengeld:
-                    <strong>{{ einsatzstelle.taschengeld }}</strong>
-                  </li>
-                  <li v-if="einsatzstelle.unterkunft">
-                    Unterkunft:
-                    <strong>{{ einsatzstelle.unterkunft }}</strong>
-                  </li>
-                  <li v-if="einsatzstelle.bewerbungsschluss">
-                    Bewerbungsschluss:
-                    <strong>{{ einsatzstelle.bewerbungsschluss }}</strong>
+                  <li v-if="einsatzstelle.flaeche">
+                    Ungefähre Flächengröße in m²:
+                    <strong>{{ einsatzstelle.flaeche }}</strong>
                   </li>
                 </ul>
               </v-card-text>
 
-              <v-card-text v-if="einsatzstelle.teaser">
+              <v-card-text v-if="einsatzstelle.kurzbeschreibung">
                 <strong>Kurzbeschreibung</strong>
                 <br>
-                {{ einsatzstelle.teaser }}
-              </v-card-text>
-
-              <v-card-text v-if="einsatzstelle.beschreibung">
-                <strong>Beschreibung</strong>
-                <br>
-                {{ einsatzstelle.beschreibung }}
+                {{ einsatzstelle.kurzbeschreibung }}
               </v-card-text>
             </v-flex>
             <v-flex md6>
               <v-card-text
-                v-if="einsatzstelle.name || einsatzstelle.adresse || einsatzstelle.webseite">
-                <strong>Einsatzstelle</strong>
+                v-if="einsatzstelle.ansprechpartner || einsatzstelle.telefon || einsatzstelle.email">
+                <strong>Ansprechpartner</strong>
                 <v-list dense>
-                  <v-list-item v-if="einsatzstelle.name">
+                  <v-list-item v-if="einsatzstelle.institution_ansprechparter">
                     <v-list-item-icon>
                       <v-icon color="#0068b4">
                         mdi-home
@@ -91,44 +57,10 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                      <v-list-item-title>{{ einsatzstelle.name }}</v-list-item-title>
+                      <v-list-item-title>{{ einsatzstelle.institution_ansprechparter }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
-
-                  <v-list-item v-if="einsatzstelle.adresse">
-                    <v-list-item-icon>
-                      <v-icon color="#0068b4">
-                        mdi-map-marker
-                      </v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>{{ einsatzstelle.adresse }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-list-item v-if="einsatzstelle.webseite">
-                    <v-list-item-icon>
-                      <v-icon color="#0068b4">
-                        mdi-web
-                      </v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <a
-                          :href="einsatzstelle.webseite"
-                          target="_blank">{{ einsatzstelle.webseite }}</a>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
-              <v-card-text
-                v-if="einsatzstelle.ansprechpartner || einsatzstelle.telefon || einsatzstelle.email">
-                <strong>Ansprechpartner</strong>
-                <v-list dense>
-                  <v-list-item v-if="einsatzstelle.ansprechpartner">
+                  <v-list-item v-if="einsatzstelle.vorname_ansprechpartner">
                     <v-list-item-icon>
                       <v-icon color="#0068b4">
                         mdi-account
@@ -136,39 +68,7 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                      <v-list-item-title>{{ einsatzstelle.ansprechpartner }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-list-item v-if="einsatzstelle.telefon">
-                    <v-list-item-icon>
-                      <v-icon color="#0068b4">
-                        mdi-phone
-                      </v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <a
-                          :href="'tel:'+einsatzstelle.telefon"
-                          target="_blank">{{ einsatzstelle.telefon }}</a>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-list-item v-if="einsatzstelle.email">
-                    <v-list-item-icon>
-                      <v-icon color="#0068b4">
-                        mdi-email
-                      </v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <a
-                          :href="'mailto:'+einsatzstelle.email"
-                          target="_blank">{{ einsatzstelle.email }}</a>
-                      </v-list-item-title>
+                      <v-list-item-title>{{ einsatzstelle.vorname_ansprechpartner }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -204,7 +104,6 @@ export default {
     bild: function() {
       var pattern = new RegExp("^(https?|ftp)://");
       var bild = "";
-      console.log(this.einsatzstelle.bild)
 
       if (pattern.test(this.einsatzstelle.bild)) {
         bild = this.einsatzstelle.bild;

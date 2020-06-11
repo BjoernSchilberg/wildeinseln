@@ -10,7 +10,7 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Popup from "./Popup";
-import germany from "./germany";
+import thueringen from "./thueringen";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 
@@ -28,11 +28,9 @@ export default {
   components: { Popup },
   props: {},
   data: () => ({
-    url: "data/EinsatzstellenKartenanwendung.geojson",
+    url: "data/wildeinseln.geojson",
     einsatzstellen: {},
     einsatzstelle: {},
-    einsatzstellen_besetzt: {},
-    einsatzstellen_unklar: {},
     dialog: false,
     map: {},
     //https://github.com/esri/esri-leaflet#terms
@@ -77,21 +75,6 @@ export default {
   }),
   created() {
     this.fetchData(this.url);
-    fetch("data/bundeslaender.geojson")
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        L.geoJSON(data, {
-          style: {
-            stroke: true,
-            color: "grey",
-            weight: 1,
-            opacity: 1,
-            fillColor: "white",
-          }
-        }).addTo(this.map);
-      });
   },
   mounted() {
     this.map = L.map("map", {
@@ -148,7 +131,7 @@ export default {
       return new L.Mask(latLngs, options);
     };
 
-    L.mask(germany).addTo(this.map);
+    L.mask(thueringen).addTo(this.map);
   },
   methods: {
     fetchData(url) {
@@ -165,61 +148,13 @@ export default {
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
           });
-          var redIcon = new L.Icon({
-            iconUrl: "img/marker-icon-red.png",
-            shadowUrl: "img/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-          });
-          var greyIcon = new L.Icon({
-            iconUrl: "img/marker-icon-grey.png",
-            shadowUrl: "img/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-          });
           this.einsatzstellen = L.geoJSON(data, {
             onEachFeature: this.onEachFeatureClosure(),
-            //filter: function(feature, layer)
-            filter: function(feature) {
-              return feature.properties.status == "frei";
-            },
             pointToLayer: function(feature, latlng) {
               return L.marker(latlng, {
                 icon: greenIcon
               }).on("mouseover", function() {
-                this.bindPopup(feature.properties.name).openPopup();
-              });
-            }
-          });
-          this.einsatzstellen_besetzt = L.geoJSON(data, {
-            onEachFeature: this.onEachFeatureClosure(),
-            //filter: function(feature, layer)
-            filter: function(feature) {
-              return feature.properties.status == "besetzt";
-            },
-            pointToLayer: function(feature, latlng) {
-              return L.marker(latlng, {
-                icon: redIcon
-              }).on("mouseover", function() {
-                this.bindPopup(feature.properties.name).openPopup();
-              });
-            }
-          });
-          this.einsatzstellen_unklar = L.geoJSON(data, {
-            onEachFeature: this.onEachFeatureClosure(),
-            //filter: function(feature, layer)
-            filter: function(feature) {
-              return (feature.properties.status !== "frei") | "besetzt";
-            },
-            pointToLayer: function(feature, latlng) {
-              return L.marker(latlng, {
-                icon: greyIcon
-              }).on("mouseover", function() {
-                this.bindPopup(feature.properties.name).openPopup();
+                this.bindPopup(feature.properties.datum).openPopup();
               });
             }
           });
@@ -240,8 +175,6 @@ export default {
           });
 
           markers.addLayer(this.einsatzstellen);
-          markers.addLayer(this.einsatzstellen_besetzt);
-          markers.addLayer(this.einsatzstellen_unklar);
           this.map.addLayer(markers);
 
           //this.map.addLayer(this.einsatzstellen);

@@ -1,0 +1,90 @@
+{
+    "type": "FeatureCollection",
+    "name": "wildeinseln",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "",
+                "anrede": "Herr",
+                "vorname": "Anton",
+                "name": "August",
+                "strassenname": "Erfurter Straße",
+                "hausnummer": "10",
+                "plz": "07743",
+                "ort": "Jena",
+                "telefon": "123456789",
+                "email": "a.a@gmx.de",
+                "datum": "5.20.2020",
+                "instution_ansprechpartner": "",
+                "vorname_ansprechpartner": "Anton",
+                "kurzbeschreibung": "Lorem ipsum",
+                "flaeche": "1",
+                "foto": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    11.5714,
+                    50.8927
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "",
+                "anrede": "Frau",
+                "vorname": "Berta",
+                "name": "Burgund",
+                "strassenname": "Helmholtzstraße",
+                "hausnummer": "12",
+                "plz": "99089",
+                "ort": "Erfurt",
+                "telefon": "123456789",
+                "email": "b.b@web.de",
+                "datum": "5.22.2020",
+                "instution_ansprechpartner": "",
+                "vorname_ansprechpartner": "Berta",
+                "kurzbeschreibung": "Lorem ipsum",
+                "flaeche": "34",
+                "foto": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    11.0183,
+                    50.9543
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "Loki-Schmidt-Stiftung",
+                "anrede": "Frau",
+                "vorname": "Carola",
+                "name": "von Clausewitz",
+                "strassenname": "Loki-Schmidt-Allee",
+                "hausnummer": "34",
+                "plz": "07548",
+                "ort": "Gera",
+                "telefon": "123456789",
+                "email": "cvc@posteo.de",
+                "datum": "5.14.2020",
+                "instution_ansprechpartner": "Loki-Schmidt-Stiftung",
+                "vorname_ansprechpartner": "Carola",
+                "kurzbeschreibung": "Lorem ipsum",
+                "flaeche": "500",
+                "foto": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    12.06728,
+                    50.87981
+                ]
+            }
+        }
+    ]
+}
