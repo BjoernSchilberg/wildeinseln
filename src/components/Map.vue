@@ -103,7 +103,6 @@ export default {
     L.mask = function(latLngs, options) {
       return new L.Mask(latLngs, options);
     };
-    console.log(val)
 
     L.mask(val).addTo(this.map);
 
