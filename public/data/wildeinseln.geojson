@@ -20,7 +20,7 @@
                 "vorname_ansprechpartner": "Anton",
                 "kurzbeschreibung": "Lorem ipsum",
                 "flaeche": "1",
-                "foto": ""
+                "foto": "https://karten.nabu.de/wildeinseln/data/640px-Wildmoos_GO-1.jpg"
             },
             "geometry": {
                 "type": "Point",
@@ -48,7 +48,7 @@
                 "vorname_ansprechpartner": "Berta",
                 "kurzbeschreibung": "Lorem ipsum",
                 "flaeche": "34",
-                "foto": ""
+                "foto": "https://karten.nabu.de/wildeinseln/data/640px-Nsg_klaedener_plage_mildenitz_039.JPG"
             },
             "geometry": {
                 "type": "Point",
@@ -76,7 +76,7 @@
                 "vorname_ansprechpartner": "Carola",
                 "kurzbeschreibung": "Lorem ipsum",
                 "flaeche": "500",
-                "foto": ""
+                "foto": "https://karten.nabu.de/wildeinseln/data/640px-Biosphaerenreservat_Mittelelbe_Kernzone.JPG"
             },
             "geometry": {
                 "type": "Point",

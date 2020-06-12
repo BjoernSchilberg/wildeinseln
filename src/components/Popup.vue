@@ -7,9 +7,9 @@
       <v-card>
         <v-container>
           <v-img
-            v-if="bild"
+            v-if="foto"
             :aspect-ratio="4.00/1"
-            :src="einsatzstelle.bild" />
+            :src="einsatzstelle.foto" />
           <v-row
             align="end"
             class="lightbox pa-2 fill-height">
@@ -101,14 +101,14 @@
 export default {
   props: { dialog: Boolean, einsatzstelle: {type: Object, default: ()=>{} }},
   computed: {
-    bild: function() {
+    foto: function() {
       var pattern = new RegExp("^(https?|ftp)://");
-      var bild = "";
+      var foto= "";
 
-      if (pattern.test(this.einsatzstelle.bild)) {
-        bild = this.einsatzstelle.bild;
+      if (pattern.test(this.einsatzstelle.foto)) {
+        foto= this.einsatzstelle.foto;
       }
-      return bild;
+      return foto;
     }
   },
   methods: {
