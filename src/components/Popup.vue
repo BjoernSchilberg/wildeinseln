@@ -46,7 +46,7 @@
             </v-flex>
             <v-flex md6>
               <v-card-text
-                v-if="einsatzstelle.ansprechpartner || einsatzstelle.telefon || einsatzstelle.email">
+                v-if="einsatzstelle.institution_ansprechparter || einsatzstelle.vorname_ansprechpartner">
                 <strong>Ansprechpartner</strong>
                 <v-list dense>
                   <v-list-item v-if="einsatzstelle.institution_ansprechparter">

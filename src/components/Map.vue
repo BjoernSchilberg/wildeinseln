@@ -6,12 +6,15 @@
   </div>
 </template>
 
+
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Popup from "./Popup";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
+import XLSX from 'xlsx';
+import GeoJSON from 'geojson';
 
 //https://github.com/KoRiGaN/Vue2Leaflet/issues/28
 
@@ -27,7 +30,7 @@ export default {
   components: { Popup },
   props: {},
   data: () => ({
-    url: "data/wildeinseln.geojson",
+    url: "data/wi.xlsx",
     einsatzstellen: {},
     einsatzstelle: {},
     thueringen: {},
@@ -155,15 +158,42 @@ export default {
     //this.map.on("moveend", function() {
     //  console.log(this.map.getCenter());
     //});
-
   },
   methods: {
     fetchData(url) {
       fetch(url)
-        .then(response => {
-          return response.json();
-        })
+      .then(function(response) {
+  /* get the data as a Blob */
+  if(!response.ok) throw new Error("fetch failed");
+  return response.arrayBuffer();
+}).then(function(ab) {
+  /* parse the data when it is received */
+  //var data = new Uint8Array(ab);
+  var workbook = XLSX.read(new Uint8Array(ab), {type: "array"});
+  var ws = workbook.Sheets[workbook.SheetNames[0]];
+  console.log(ws);
+  ws.K2.w = "datum"
+  ws.L2.w = "titel";
+  ws.M2.w = "institution_ansprechparter";
+ws.N2.w = "vorname_ansprechpartner";
+  ws.O2.w = "kurzbeschreibung";
+  ws.P2.w = "flaeche";
+  ws.S2.w = "foto";
+  var range = XLSX.utils.decode_range(ws['!ref']);
+range.s.c = 11;
+range.e.c = 18;
+var newRange = XLSX.utils.encode_range(range);
+
+ws['!ref'] = newRange;
+
+var js = XLSX.utils.sheet_to_json(ws,{range: 1});
+  return js;
+
+})
         .then(data => {
+            console.log(data)
+        
+            
           var greenIcon = new L.Icon({
             iconUrl: "img/marker-icon-green.png",
             shadowUrl: "img/marker-shadow.png",
@@ -172,7 +202,7 @@ export default {
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
           });
-          this.einsatzstellen = L.geoJSON(data, {
+          this.einsatzstellen = L.geoJSON( GeoJSON.parse(data, {Point: ['lat', 'lon']}), {
             onEachFeature: this.onEachFeatureClosure(),
             pointToLayer: function(feature, latlng) {
               return L.marker(latlng, {
