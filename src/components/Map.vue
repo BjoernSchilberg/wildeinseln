@@ -169,7 +169,7 @@ export default {
 }).then(function(ab) {
   /* parse the data when it is received */
   //var data = new Uint8Array(ab);
-  var workbook = XLSX.read(new Uint8Array(ab), {type: "array"});
+  var workbook = XLSX.read(new Uint8Array(ab), {type: "array", cellDates: true, locale: "de-DE", cellText: false});
   var ws = workbook.Sheets[workbook.SheetNames[0]];
   console.log(ws);
   ws.K2.w = "datum"
@@ -180,13 +180,13 @@ ws.N2.w = "vorname_ansprechpartner";
   ws.P2.w = "flaeche";
   ws.S2.w = "foto";
   var range = XLSX.utils.decode_range(ws['!ref']);
-range.s.c = 11;
+range.s.c = 10;
 range.e.c = 18;
 var newRange = XLSX.utils.encode_range(range);
 
 ws['!ref'] = newRange;
 
-var js = XLSX.utils.sheet_to_json(ws,{range: 1});
+var js = XLSX.utils.sheet_to_json(ws,{range: 1, raw: false, dateNF: 'DD"."MM"."YYYY'});
   return js;
 
 })
@@ -208,7 +208,7 @@ var js = XLSX.utils.sheet_to_json(ws,{range: 1});
               return L.marker(latlng, {
                 icon: greenIcon
               }).on("mouseover", function() {
-                this.bindPopup(feature.properties.datum).openPopup();
+                this.bindPopup(feature.properties.titel).openPopup();
               });
             }
           });
