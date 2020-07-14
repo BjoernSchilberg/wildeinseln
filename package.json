@@ -12,7 +12,8 @@
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "vue": "^2.6.11",
-    "vuetify": "^2.2.29"
+    "vuetify": "^2.2.29",
+    "xlsx": "^0.16.3"
   },
   "devDependencies": {
     "@mdi/font": "^5.3.45",
