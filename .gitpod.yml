@@ -1,2 +1,9 @@
 tasks:
   - init: yarn install && yarn run serve
+
+vscode:
+  extensions:
+    - octref.vetur@0.24.0:FtNScOJHzSTxcNY6NB60Cg==
+    - ahmadawais.shades-of-purple@6.12.0:phtipGVPrS5xO6knvBtr8A==
+    - SonarSource.sonarlint-vscode@1.16.0:WqH3KkcnW+ruTGeBAU1vdQ==
+    - vscodevim.vim@1.15.0:17f5xLIsmdbLN4ls8HvoFg==
