@@ -30,7 +30,7 @@ export default {
   components: { Popup },
   props: {},
   data: () => ({
-    url: "data/wi.xlsx",
+    url: "https://wilde-inseln.nabu-thueringen.de/wi.xlsx",
     einsatzstellen: {},
     einsatzstelle: {},
     thueringen: {},
