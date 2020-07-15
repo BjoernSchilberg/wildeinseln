@@ -13,8 +13,8 @@ import L from "leaflet";
 import Popup from "./Popup";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
-import XLSX from 'xlsx';
-import GeoJSON from 'geojson';
+import XLSX from "xlsx";
+import GeoJSON from "geojson";
 
 //https://github.com/KoRiGaN/Vue2Leaflet/issues/28
 
@@ -79,36 +79,35 @@ export default {
   }),
   watch: {
     coords: function(val) {
-    L.Mask = L.Polygon.extend({
-      options: {
-        stroke: false,
-        color: "#333",
-        fillOpacity: 0.5,
-        clickable: true,
-        outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
-      },
+      L.Mask = L.Polygon.extend({
+        options: {
+          stroke: false,
+          color: "#333",
+          fillOpacity: 0.5,
+          clickable: true,
+          outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
+        },
 
-      initialize: function(latLngs, options) {
-        var outerBoundsLatLngs = [
-          this.options.outerBounds.getSouthWest(),
-          this.options.outerBounds.getNorthWest(),
-          this.options.outerBounds.getNorthEast(),
-          this.options.outerBounds.getSouthEast()
-        ];
-        L.Polygon.prototype.initialize.call(
-          this,
-          [outerBoundsLatLngs, latLngs],
-          options
-        );
-      }
-    });
+        initialize: function(latLngs, options) {
+          var outerBoundsLatLngs = [
+            this.options.outerBounds.getSouthWest(),
+            this.options.outerBounds.getNorthWest(),
+            this.options.outerBounds.getNorthEast(),
+            this.options.outerBounds.getSouthEast()
+          ];
+          L.Polygon.prototype.initialize.call(
+            this,
+            [outerBoundsLatLngs, latLngs],
+            options
+          );
+        }
+      });
 
-    L.mask = function(latLngs, options) {
-      return new L.Mask(latLngs, options);
-    };
+      L.mask = function(latLngs, options) {
+        return new L.Mask(latLngs, options);
+      };
 
-    L.mask(val).addTo(this.map);
-
+      L.mask(val).addTo(this.map);
     }
   },
   created() {
@@ -118,18 +117,17 @@ export default {
         return response.json();
       })
       .then(data => {
-        let cs= []
-        this.thueringen=L.geoJSON(data, {
-            coordsToLatLng: function(coords) {
+        let cs = [];
+        this.thueringen = L.geoJSON(data, {
+          coordsToLatLng: function(coords) {
             //                    latitude , longitude, altitude
             //return new L.LatLng(coords[1], coords[0], coords[2]); //Normal behavior
-            cs.push([coords[1],coords[0]])
+            cs.push([coords[1], coords[0]]);
             return new L.LatLng(coords[1], coords[0], coords[2]);
-
           }
         });
-        this.map.fitBounds(this.thueringen.getBounds())
-        this.coords=cs
+        this.map.fitBounds(this.thueringen.getBounds());
+        this.coords = cs;
       });
   },
   mounted() {
@@ -162,38 +160,46 @@ export default {
   methods: {
     fetchData(url) {
       fetch(url)
-      .then(function(response) {
-  /* get the data as a Blob */
-  if(!response.ok) throw new Error("fetch failed");
-  return response.arrayBuffer();
-}).then(function(ab) {
-  /* parse the data when it is received */
-  //var data = new Uint8Array(ab);
-  var workbook = XLSX.read(new Uint8Array(ab), {type: "array", cellDates: true, locale: "de-DE", cellText: false});
-  var ws = workbook.Sheets[workbook.SheetNames[0]];
-  console.log(ws);
-  ws.K2.w = "datum"
-  ws.L2.w = "titel";
-  ws.M2.w = "institution_ansprechparter";
-ws.N2.w = "vorname_ansprechpartner";
-  ws.O2.w = "kurzbeschreibung";
-  ws.P2.w = "flaeche";
-  ws.S2.w = "foto";
-  var range = XLSX.utils.decode_range(ws['!ref']);
-range.s.c = 10;
-range.e.c = 18;
-var newRange = XLSX.utils.encode_range(range);
+        .then(function(response) {
+          /* get the data as a Blob */
+          if (!response.ok) throw new Error("fetch failed");
+          return response.arrayBuffer();
+        })
+        .then(function(ab) {
+          /* parse the data when it is received */
+          //var data = new Uint8Array(ab);
+          var workbook = XLSX.read(new Uint8Array(ab), {
+            type: "array",
+            cellDates: true,
+            locale: "de-DE",
+            cellText: false
+          });
+          var ws = workbook.Sheets[workbook.SheetNames[0]];
+          console.log(ws);
+          ws.K2.w = "datum";
+          ws.L2.w = "titel";
+          ws.M2.w = "institution_ansprechparter";
+          ws.N2.w = "vorname_ansprechpartner";
+          ws.O2.w = "kurzbeschreibung";
+          ws.P2.w = "flaeche";
+          ws.S2.w = "foto";
+          var range = XLSX.utils.decode_range(ws["!ref"]);
+          range.s.c = 10;
+          range.e.c = 18;
+          var newRange = XLSX.utils.encode_range(range);
 
-ws['!ref'] = newRange;
+          ws["!ref"] = newRange;
 
-var js = XLSX.utils.sheet_to_json(ws,{range: 1, raw: false, dateNF: 'DD"."MM"."YYYY'});
-  return js;
-
-})
+          var js = XLSX.utils.sheet_to_json(ws, {
+            range: 1,
+            raw: false,
+            dateNF: 'DD"."MM"."YYYY'
+          });
+          return js;
+        })
         .then(data => {
-            console.log(data)
-        
-            
+          console.log(data);
+
           var greenIcon = new L.Icon({
             iconUrl: "img/marker-icon-green.png",
             shadowUrl: "img/marker-shadow.png",
@@ -202,16 +208,19 @@ var js = XLSX.utils.sheet_to_json(ws,{range: 1, raw: false, dateNF: 'DD"."MM"."Y
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
           });
-          this.einsatzstellen = L.geoJSON( GeoJSON.parse(data, {Point: ['lat', 'lon']}), {
-            onEachFeature: this.onEachFeatureClosure(),
-            pointToLayer: function(feature, latlng) {
-              return L.marker(latlng, {
-                icon: greenIcon
-              }).on("mouseover", function() {
-                this.bindPopup(feature.properties.titel).openPopup();
-              });
+          this.einsatzstellen = L.geoJSON(
+            GeoJSON.parse(data, { Point: ["lat", "lon"] }),
+            {
+              onEachFeature: this.onEachFeatureClosure(),
+              pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {
+                  icon: greenIcon
+                }).on("mouseover", function() {
+                  this.bindPopup(feature.properties.titel).openPopup();
+                });
+              }
             }
-          });
+          );
 
           var markers = L.markerClusterGroup({
             showCoverageOnHover: false,
