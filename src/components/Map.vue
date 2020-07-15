@@ -175,7 +175,6 @@ export default {
             cellText: false
           });
           var ws = workbook.Sheets[workbook.SheetNames[0]];
-          console.log(ws);
           ws.K2.w = "datum";
           ws.L2.w = "titel";
           ws.M2.w = "institution_ansprechparter";
@@ -198,7 +197,6 @@ export default {
           return js;
         })
         .then(data => {
-          console.log(data);
 
           var greenIcon = new L.Icon({
             iconUrl: "img/marker-icon-green.png",
