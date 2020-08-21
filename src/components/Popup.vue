@@ -30,9 +30,9 @@
           max-height="600">
           <v-container>
             <v-img
-              v-if="foto"
+              v-if="einsatzstelle.foto"
               :aspect-ratio="4.00/1"
-              :src="einsatzstelle.foto" />
+              :src="'https://wilde-inseln.nabu-thueringen.de/bilder/'+einsatzstelle.foto" />
             <v-layout row>
               <v-flex md6>
                 <v-card-text>
@@ -102,17 +102,6 @@
 <script>
 export default {
   props: { dialog: Boolean, einsatzstelle: {type: Object, default: ()=>{} }},
-  computed: {
-    foto: function() {
-      var pattern = new RegExp("^(https?|ftp)://");
-      var foto= "";
-
-      if (pattern.test(this.einsatzstelle.foto)) {
-        foto= this.einsatzstelle.foto;
-      }
-      return foto;
-    }
-  },
   methods: {
     schliessen() {
       this.$emit("update:dialog", !this.dialog);
