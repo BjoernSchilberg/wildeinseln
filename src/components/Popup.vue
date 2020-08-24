@@ -31,9 +31,16 @@
           <v-container>
             <v-img
               v-if="einsatzstelle.foto"
-              :aspect-ratio="4.00/1"
+              :aspect-ratio="16/9"
               :src="'https://wilde-inseln.nabu-thueringen.de/bilder/'+einsatzstelle.foto" />
             <v-layout row>
+              <v-flex md6>
+                <v-card-text v-if="einsatzstelle.kurzbeschreibung">
+                  <strong>Kurzbeschreibung</strong>
+                  <br>
+                  {{ einsatzstelle.kurzbeschreibung }}
+                </v-card-text>
+              </v-flex>
               <v-flex md6>
                 <v-card-text>
                   <strong> Eckdaten </strong>
@@ -48,14 +55,6 @@
                     </li>
                   </ul>
                 </v-card-text>
-
-                <v-card-text v-if="einsatzstelle.kurzbeschreibung">
-                  <strong>Kurzbeschreibung</strong>
-                  <br>
-                  {{ einsatzstelle.kurzbeschreibung }}
-                </v-card-text>
-              </v-flex>
-              <v-flex md6>
                 <v-card-text
                   v-if="einsatzstelle.institution_ansprechparter || einsatzstelle.vorname_ansprechpartner">
                   <strong>Ansprechpartner</strong>
